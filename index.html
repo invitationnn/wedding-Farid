@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Farid & Nur Wedding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --dark-green: #2d4a27;
+            --bg-color: #f9fbf9;
+            --accent-brown: #4a341b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #d1dbd1;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* --- STAGE 1: VIDEO SECTION --- */
+        #video-section {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            transition: opacity 1s ease, visibility 1s;
+            background-color: #e0eee0;
+        }
+
+        .phone-wrapper {
+            position: relative;
+            width: 90vw;
+            height: 80vh;
+            max-width: 450px; 
+            max-height: 800px;
+            background: #000;
+            border: 8px solid #4a341b;
+            outline: 2px solid #4a341b;
+            outline-offset: -15px;
+            border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            overflow: hidden;
+            transition: filter 1.2s ease;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .blurred { filter: blur(15px) brightness(0.6); }
+
+        .overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+            z-index: 110;
+        }
+
+        .overlay.visible { opacity: 1; pointer-events: auto; }
+
+        .btn-reveal {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: white;
+            padding: 18px 45px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            animation: pulse 2s infinite;
+        }
+
+        /* --- STAGE 2: INVITATION CARD --- */
+        #invitation-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1.5s ease, transform 1.5s ease;
+            display: none; /* Hidden initially */
+        }
+
+        .invitation-card {
+            width: 95vw; 
+            max-width: 450px; 
+            min-height: 90vh;
+            background-color: var(--bg-color);
+            background-image: url('background.png');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            padding: 60px 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            border-radius: 12px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .flower { position: absolute; width: 220px; z-index: 1; opacity: 0.9; pointer-events: none; }
+        .top-left { top: -40px; left: -60px; }
+        .top-right { top: -10px; right: -80px; }
+        .bottom-left { bottom: -10px; left: -60px; transform: rotate(90deg); }
+        .bottom-right { bottom: -10px; right: -60px; transform: rotate(90deg) scaleX(-1); }
+
+        .content { position: relative; z-index: 3; }
+        .bismillah { font-size: 28px; margin-bottom: 12px; color: var(--dark-green); }
+        .intro-text { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--dark-green); line-height: 1.6; margin-bottom: 20px; }
+        .names { font-family: 'Great Vibes', cursive; font-size: 60px; color: var(--dark-green); margin: 5px 0; line-height: 1; }
+        .pengantin { width: 100%; max-width: 280px; margin: 10px auto; transform: scaleX(-1); opacity: 0.8; mix-blend-mode: multiply; }
+        
+        .date-container { display: flex; align-items: center; justify-content: center; margin: 20px 0; color: var(--accent-brown); }
+        .side-label { flex: 1; font-size: 11px; font-weight: 600; letter-spacing: 1px; border-top: 1px solid var(--accent-brown); border-bottom: 1px solid var(--accent-brown); padding: 8px 0; text-transform: uppercase; }
+        .center-date { padding: 0 15px; }
+        .month-label { display: block; font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
+        .day-number { font-family: 'Playfair Display', serif; font-size: 48px; line-height: 0.8; }
+        .year-label { display: block; font-size: 11px; letter-spacing: 4px; font-weight: 600; margin-top: 8px; }
+        
+        .location-info { font-size: 12px; color: var(--accent-brown); font-weight: 700; letter-spacing: 0.5px; line-height: 1.4; margin: 15px auto; text-transform: uppercase; }
+        .btn-location { display: inline-block; background-color: var(--accent-brown); color: #fff; padding: 12px 35px; border-radius: 40px; text-decoration: none; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+    </style>
+</head>
+<body>
+
+    <!-- SECTION 1: VIDEO REVEAL -->
+    <div id="video-section">
+        <div class="phone-wrapper" id="videoBox">
+            <video id="weddingVideo" playsinline autoplay muted>
+                <source src="wed.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="overlay" id="overlayBox">
+            <button class="btn-reveal" onclick="showInvitation()">Click Here</button>
+        </div>
+    </div>
+
+    <!-- SECTION 2: INVITATION CARD -->
+    <div id="invitation-section">
+        <div class="invitation-card">
+            <img src="flo1.png" class="flower top-left" alt="">
+            <img src="flo2.png" class="flower top-right" alt="">
+            <img src="flo3.png" class="flower bottom-left" alt="">
+            <img src="flo3.png" class="flower bottom-right" alt="">
+
+            <div class="content">
+                <div class="bismillah">﷽</div>
+                <p class="intro-text">
+                    In The Name Of Allah The Most Beneficent<br>And The Most Merciful<br><br>
+                    Please Join Us To Celebrate The Wedding Of:
+                </p>
+                <h1 class="names">Farid &<br>Nur Najjat</h1>
+                <img src="pelamin.png" class="pengantin" alt="Wedding Couple">
+                
+                <div class="date-container">
+                    <div class="side-label">Thursday</div>
+                    <div class="center-date">
+                        <span class="month-label">August</span>
+                        <span class="day-number">02</span>
+                        <span class="year-label">2026</span>
+                    </div>
+                    <div class="side-label">at 8am</div>
+                </div>
+
+                <div class="location-info">
+                    NO. 3121, TAMAN KUNAK KAYA,<br>LORONG 1, KUNAK, SABAH
+                </div>
+                <a href="https://maps.app.goo.gl/1Kmz8w5hyboASp4M9" class="btn-location">View Location</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('weddingVideo');
+        const videoBox = document.getElementById('videoBox');
+        const overlayBox = document.getElementById('overlayBox');
+        const videoSection = document.getElementById('video-section');
+        const invitationSection = document.getElementById('invitation-section');
+
+        // When video ends, blur it and show the button
+        video.onended = function() {
+            videoBox.classList.add('blurred');
+            overlayBox.classList.add('visible');
+        };
+
+        // Transition logic
+        function showInvitation() {
+            // Fade out video section
+            videoSection.style.opacity = '0';
+            
+            setTimeout(() => {
+                videoSection.style.display = 'none';
+                // Show invitation section
+                invitationSection.style.display = 'block';
+                // Trigger fade in animation
+                setTimeout(() => {
+                    invitationSection.style.opacity = '1';
+                    invitationSection.style.transform = 'translateY(0)';
+                }, 50);
+            }, 1000);
+        }
+
+        // Start video on first tap (mobile requirement)
+        document.body.addEventListener('click', () => {
+            if (video.paused) video.play();
+        }, { once: true });
+    </script>
+
+</body>
+</html>
+</html>
