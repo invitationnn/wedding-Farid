@@ -11,6 +11,7 @@
             --dark-green: #2d4a27;
             --bg-color: #f9fbf9;
             --accent-brown: #4a341b;
+            --envelope-color: #e0eee0;
         }
 
         * {
@@ -25,10 +26,68 @@
             height: 100%;
             background-color: #d1dbd1;
             font-family: 'Montserrat', sans-serif;
+            overflow: hidden; /* Prevent scrolling until invitation is open */
+        }
+
+        /* --- STAGE 0: ENVELOPE --- */
+        #envelope-section {
+            position: fixed;
+            inset: 0;
+            background-color: #d1dbd1;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow-x: hidden;
+            z-index: 300;
+            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s ease;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background: var(--envelope-color);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 4px;
+        }
+
+        /* The Triangle Flap */
+        .envelope-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid #c8d8c8;
+            z-index: 1;
+        }
+
+        .wax-seal {
+            position: relative;
+            z-index: 2;
+            width: 80px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .wax-seal:hover {
+            transform: scale(1.1);
+        }
+
+        .click-text {
+            position: absolute;
+            bottom: -40px;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: var(--dark-green);
+            text-transform: uppercase;
+            font-weight: 600;
         }
 
         /* --- STAGE 1: VIDEO SECTION --- */
@@ -39,7 +98,8 @@
             justify-content: center;
             align-items: center;
             z-index: 100;
-            transition: opacity 1s ease, visibility 1s;
+            opacity: 0; /* Hidden until envelope clicked */
+            transition: opacity 1s ease;
             background-color: #e0eee0;
         }
 
@@ -51,8 +111,6 @@
             max-height: 800px;
             background: #000;
             border: 8px solid #4a341b;
-            outline: 2px solid #4a341b;
-            outline-offset: -15px;
             border-radius: 15px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.2);
             overflow: hidden;
@@ -92,25 +150,25 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 4px;
-            text-decoration: none;
             cursor: pointer;
-            animation: pulse 2s infinite;
         }
 
         /* --- STAGE 2: INVITATION CARD --- */
         #invitation-section {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 1.5s ease, transform 1.5s ease;
-            display: none; /* Hidden initially */
+            display: none; 
+            padding: 40px 10px;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
         }
 
         .invitation-card {
-            width: 95vw; 
+            width: 100%;
             max-width: 450px; 
-            min-height: 90vh;
+            margin: 0 auto;
             background-color: var(--bg-color);
-            background-image: url('background.png');
+            background-image: url('background.png'); 
             background-size: cover;
             background-position: center;
             position: relative;
@@ -118,48 +176,78 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.15);
             border-radius: 12px;
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
             overflow: hidden;
+        }
+
+        /* Music Toggle Button */
+        #music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 400;
+            background: var(--accent-brown);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: none; 
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            font-size: 20px;
         }
 
         .flower { position: absolute; width: 220px; z-index: 1; opacity: 0.9; pointer-events: none; }
         .top-left { top: -40px; left: -60px; }
-        .top-right { top: -10px; right: -80px; }
+        .top-right { top: -20px; right: -80px; }
         .bottom-left { bottom: -10px; left: -60px; transform: rotate(90deg); }
         .bottom-right { bottom: -10px; right: -60px; transform: rotate(90deg) scaleX(-1); }
 
         .content { position: relative; z-index: 3; }
         .bismillah { font-size: 28px; margin-bottom: 12px; color: var(--dark-green); }
-        .intro-text { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--dark-green); line-height: 1.6; margin-bottom: 20px; }
-        .names { font-family: 'Great Vibes', cursive; font-size: 60px; color: var(--dark-green); margin: 5px 0; line-height: 1; }
-        .pengantin { width: 100%; max-width: 280px; margin: 10px auto; transform: scaleX(-1); opacity: 0.8; mix-blend-mode: multiply; }
+        .intro-text { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--dark-green); line-height: 1.6; margin-bottom: 20px; }
+        .names { font-family: 'Great Vibes', cursive; font-size: 32px; color: var(--dark-green); margin: 10px 0; }
+        .pengantin { width: 100%; max-width: 280px; margin: 15px auto; transform: scaleX(-1); opacity: 0.8; mix-blend-mode: multiply; }
         
-        .date-container { display: flex; align-items: center; justify-content: center; margin: 20px 0; color: var(--accent-brown); }
-        .side-label { flex: 1; font-size: 11px; font-weight: 600; letter-spacing: 1px; border-top: 1px solid var(--accent-brown); border-bottom: 1px solid var(--accent-brown); padding: 8px 0; text-transform: uppercase; }
+        .date-container { display: flex; align-items: center; justify-content: center; margin: 25px 0; color: var(--accent-brown); }
+        .side-label { flex: 1; font-size: 10px; font-weight: 600; letter-spacing: 1px; border-top: 1px solid var(--accent-brown); border-bottom: 1px solid var(--accent-brown); padding: 8px 0; text-transform: uppercase; }
         .center-date { padding: 0 15px; }
         .month-label { display: block; font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
         .day-number { font-family: 'Playfair Display', serif; font-size: 48px; line-height: 0.8; }
         .year-label { display: block; font-size: 11px; letter-spacing: 4px; font-weight: 600; margin-top: 8px; }
         
-        .location-info { font-size: 12px; color: var(--accent-brown); font-weight: 700; letter-spacing: 0.5px; line-height: 1.4; margin: 15px auto; text-transform: uppercase; }
-        .btn-location { display: inline-block; background-color: var(--accent-brown); color: #fff; padding: 12px 35px; border-radius: 40px; text-decoration: none; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+        .location-info { font-size: 12px; color: var(--accent-brown); font-weight: 700; letter-spacing: 0.5px; line-height: 1.6; margin: 20px auto; text-transform: uppercase; }
+        .btn-location { display: inline-block; background-color: var(--accent-brown); color: #fff; padding: 14px 35px; border-radius: 40px; text-decoration: none; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-top: 10px; }
 
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body>
 
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="music-control" onclick="toggleMusic()">🎵</div>
+
+    <!-- SECTION 0: THE ENVELOPE -->
+    <div id="envelope-section">
+        <div class="envelope-wrapper">
+            <img src="wax.png" class="wax-seal" onclick="openEnvelope()" alt="Wax Seal">
+            <div class="click-text">Buka Undangan</div>
+        </div>
+    </div>
+
     <!-- SECTION 1: VIDEO REVEAL -->
     <div id="video-section">
         <div class="phone-wrapper" id="videoBox">
-            <video id="weddingVideo" playsinline autoplay muted>
+            <video id="weddingVideo" playsinline muted>
                 <source src="wed.mp4" type="video/mp4">
             </video>
         </div>
         <div class="overlay" id="overlayBox">
-            <button class="btn-reveal" onclick="showInvitation()">Click Here</button>
+            <button class="btn-reveal" onclick="showInvitation()">Open Invitation</button>
         </div>
     </div>
 
@@ -174,24 +262,29 @@
             <div class="content">
                 <div class="bismillah">﷽</div>
                 <p class="intro-text">
-                    In The Name Of Allah The Most Beneficent<br>And The Most Merciful<br><br>
-                    Please Join Us To Celebrate The Wedding Of:
+                    HJH NORWANA BINTI MELLONG (HJH. NOR) <br><br>Dengan segala hormatnya, saya menjemput<br>DATO/DATIN/TUAN/PUAN/ENCIK/CIK<br><br>
+                    Ke majelis walimatulurs putra saya
                 </p>
-                <h1 class="names">Farid &<br>Nur Najjat</h1>
+                <h1 class="names">Mohd. Farid Bin Saleh</h1>
+                <p style="font-size: 12px; font-style: italic;">dengan pasangan</p> 
+                <h1 class="names">Nur Najjat Binti Baharuddin</h1>
+                
                 <img src="pelamin.png" class="pengantin" alt="Wedding Couple">
                 
                 <div class="date-container">
-                    <div class="side-label">Thursday</div>
+                    <div class="side-label">KHAMIS</div>
                     <div class="center-date">
-                        <span class="month-label">August</span>
+                        <span class="month-label">OGOS</span>
                         <span class="day-number">02</span>
                         <span class="year-label">2026</span>
                     </div>
-                    <div class="side-label">at 8am</div>
+                    <div class="side-label">8am - Selesai</div>
                 </div>
 
                 <div class="location-info">
-                    NO. 3121, TAMAN KUNAK KAYA,<br>LORONG 1, KUNAK, SABAH
+                    NO. 3121, TAMAN KUNAK KAYA,<br>LORONG 1, KUNAK, SABAH<br><br>
+                    <span style="font-size: 10px;">HUBUNGI:</span><br>
+                    HJH.NOR: 0198035635 <br> FARID: 0105883198
                 </div>
                 <a href="https://maps.app.goo.gl/1Kmz8w5hyboASp4M9" class="btn-location">View Location</a>
             </div>
@@ -202,38 +295,60 @@
         const video = document.getElementById('weddingVideo');
         const videoBox = document.getElementById('videoBox');
         const overlayBox = document.getElementById('overlayBox');
+        const envelopeSection = document.getElementById('envelope-section');
         const videoSection = document.getElementById('video-section');
         const invitationSection = document.getElementById('invitation-section');
+        const bgMusic = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('music-control');
 
-        // When video ends, blur it and show the button
+        // STEP 1: OPEN ENVELOPE
+        function openEnvelope() {
+            // Start Music and Video (Satisfies browser interaction rule)
+            bgMusic.play().catch(e => console.log("Audio blocked"));
+            video.play();
+            
+            // Fade out envelope
+            envelopeSection.style.opacity = '0';
+            envelopeSection.style.transform = 'scale(1.2)';
+            
+            setTimeout(() => {
+                envelopeSection.style.display = 'none';
+                videoSection.style.opacity = '1';
+            }, 1000);
+        }
+
+        // STEP 2: VIDEO ENDED
         video.onended = function() {
             videoBox.classList.add('blurred');
             overlayBox.classList.add('visible');
         };
 
-        // Transition logic
+        // STEP 3: SHOW FINAL INVITATION
         function showInvitation() {
-            // Fade out video section
             videoSection.style.opacity = '0';
             
             setTimeout(() => {
                 videoSection.style.display = 'none';
-                // Show invitation section
-                invitationSection.style.display = 'block';
-                // Trigger fade in animation
+                invitationSection.style.display = 'flex'; 
+                musicBtn.style.display = 'flex'; 
+                document.body.style.overflow = 'auto'; // Enable scrolling now
+                
                 setTimeout(() => {
                     invitationSection.style.opacity = '1';
-                    invitationSection.style.transform = 'translateY(0)';
                 }, 50);
             }, 1000);
         }
 
-        // Start video on first tap (mobile requirement)
-        document.body.addEventListener('click', () => {
-            if (video.paused) video.play();
-        }, { once: true });
+        function toggleMusic() {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicBtn.innerHTML = "🎵";
+            } else {
+                bgMusic.pause();
+                musicBtn.innerHTML = "🔇";
+            }
+        }
     </script>
 
 </body>
-</html>
 </html>
