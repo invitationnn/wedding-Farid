@@ -12,7 +12,7 @@
             --bg-color: #f9fbf9;
             --accent-brown: #4a341b;
             --envelope-color: #e0eee0;
-            --glass-white: rgba(255, 255, 255, 0.45); /* Shading color */
+            --glass-white: rgba(255, 255, 255, 0.45);
         }
 
         * {
@@ -117,6 +117,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            background: #000;
         }
 
         .blurred { filter: blur(15px) brightness(0.6); }
@@ -206,7 +207,6 @@
             color: var(--dark-green); 
         }
 
-        /* Intro Text Shading */
         .intro-text { 
             font-size: 11px; 
             text-transform: uppercase; 
@@ -220,14 +220,12 @@
             border-radius: 10px;
         }
 
-        /* Name Glow for Contrast */
         .names { 
             font-family: 'Great Vibes', cursive; 
             font-size: 34px; 
             color: var(--dark-green); 
             margin: 10px 0;
-            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9), 
-                         -1px -1px 0 rgba(255,255,255,0.5);
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9);
         }
 
         .pengantin { 
@@ -254,8 +252,8 @@
         .month-label { display: block; font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
         .day-number { font-family: 'Playfair Display', serif; font-size: 48px; line-height: 0.8; }
         .year-label { display: block; font-size: 11px; letter-spacing: 4px; font-weight: 600; margin-top: 8px; }
+
         
-        /* Location Info Shading */
         .location-info { 
             font-size: 12px; 
             color: var(--accent-brown); 
@@ -268,7 +266,6 @@
             background: var(--glass-white);
             backdrop-filter: blur(3px);
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
         }
 
         .btn-location { 
@@ -290,7 +287,7 @@
 </head>
 <body>
 
-    <audio id="bgMusic" loop>
+    <audio id="bgMusic" loop preload="auto">
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
@@ -305,7 +302,7 @@
 
     <div id="video-section">
         <div class="phone-wrapper" id="videoBox">
-            <video id="weddingVideo" playsinline muted>
+            <video id="weddingVideo" playsinline muted preload="auto">
                 <source src="wed.mp4" type="video/mp4">
             </video>
         </div>
@@ -352,9 +349,9 @@
                     LORONG 1, KUNAK, SABAH<br><br>
                     <span style="font-size: 10px; opacity: 0.8;">HUBUNGI:</span><br>
                     HJH.NOR: 0198035635 <br> 
-					HARDIANSHAH: 0138989452 <br>
+                    HARDIANSHAH: 0138989452 <br>
                     HARIANTO: 0198822044 <br>
-					FARID: 0105883198
+                    FARID: 0105883198
                 </div>
                 
                 <a href="https://maps.google.com" target="_blank" class="btn-location">View Location</a>
@@ -372,17 +369,29 @@
         const bgMusic = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('music-control');
 
+        // PRE-LOAD: Force the browser to start fetching data immediately
+        window.addEventListener('load', () => {
+            video.load();
+        });
+
         function openEnvelope() {
-            bgMusic.play().catch(e => console.log("Audio blocked"));
-            video.play();
+            // Start audio
+            bgMusic.play().catch(e => console.log("Audio blocked until interaction"));
             
-            envelopeSection.style.opacity = '0';
-            envelopeSection.style.transform = 'scale(1.2)';
-            
-            setTimeout(() => {
-                envelopeSection.style.display = 'none';
-                videoSection.style.opacity = '1';
-            }, 1000);
+            // Try to play video FIRST. Only transition if it's ready.
+            video.play().then(() => {
+                envelopeSection.style.opacity = '0';
+                envelopeSection.style.transform = 'scale(1.2)';
+                
+                setTimeout(() => {
+                    envelopeSection.style.display = 'none';
+                    videoSection.style.opacity = '1';
+                }, 1000);
+            }).catch(err => {
+                // Fallback: If video still hasn't loaded or is blocked, skip to invite
+                console.log("Video playback error:", err);
+                showInvitation();
+            });
         }
 
         video.onended = function() {
