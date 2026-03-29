@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Wedding</title>
+    <title>Wedding Invitation - Farid & Najjat</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
     
     <style>
@@ -12,6 +12,7 @@
             --bg-color: #f9fbf9;
             --accent-brown: #4a341b;
             --envelope-color: #e0eee0;
+            --glass-white: rgba(255, 255, 255, 0.45); /* Shading color */
         }
 
         * {
@@ -26,7 +27,7 @@
             height: 100%;
             background-color: #d1dbd1;
             font-family: 'Montserrat', sans-serif;
-            overflow: hidden; /* Prevent scrolling until invitation is open */
+            overflow: hidden; 
         }
 
         /* --- STAGE 0: ENVELOPE --- */
@@ -53,7 +54,6 @@
             border-radius: 4px;
         }
 
-        /* The Triangle Flap */
         .envelope-wrapper::before {
             content: '';
             position: absolute;
@@ -76,10 +76,6 @@
             animation: pulse 2s infinite;
         }
 
-        .wax-seal:hover {
-            transform: scale(1.1);
-        }
-
         .click-text {
             position: absolute;
             bottom: -40px;
@@ -98,7 +94,7 @@
             justify-content: center;
             align-items: center;
             z-index: 100;
-            opacity: 0; /* Hidden until envelope clicked */
+            opacity: 0;
             transition: opacity 1s ease;
             background-color: #e0eee0;
         }
@@ -141,7 +137,6 @@
         .btn-reveal {
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             color: white;
             padding: 18px 45px;
             border: 1px solid rgba(255, 255, 255, 0.5);
@@ -172,14 +167,13 @@
             background-size: cover;
             background-position: center;
             position: relative;
-            padding: 60px 25px;
+            padding: 60px 20px;
             box-shadow: 0 15px 40px rgba(0,0,0,0.15);
             border-radius: 12px;
             text-align: center;
             overflow: hidden;
         }
 
-        /* Music Toggle Button */
         #music-control {
             position: fixed;
             bottom: 20px;
@@ -205,20 +199,91 @@
         .bottom-right { bottom: -10px; right: -60px; transform: rotate(90deg) scaleX(-1); }
 
         .content { position: relative; z-index: 3; }
-        .bismillah { font-size: 28px; margin-bottom: 12px; color: var(--dark-green); }
-        .intro-text { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--dark-green); line-height: 1.6; margin-bottom: 20px; }
-        .names { font-family: 'Great Vibes', cursive; font-size: 32px; color: var(--dark-green); margin: 10px 0; }
-        .pengantin { width: 100%; max-width: 280px; margin: 15px auto; transform: scaleX(-1); opacity: 0.8; mix-blend-mode: multiply; }
         
-        .date-container { display: flex; align-items: center; justify-content: center; margin: 25px 0; color: var(--accent-brown); }
+        .bismillah { 
+            font-size: 28px; 
+            margin-bottom: 12px; 
+            color: var(--dark-green); 
+        }
+
+        /* Intro Text Shading */
+        .intro-text { 
+            font-size: 11px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            color: var(--dark-green); 
+            line-height: 1.6; 
+            margin: 0 10px 20px 10px;
+            padding: 15px 10px;
+            background: var(--glass-white);
+            backdrop-filter: blur(3px);
+            border-radius: 10px;
+        }
+
+        /* Name Glow for Contrast */
+        .names { 
+            font-family: 'Great Vibes', cursive; 
+            font-size: 34px; 
+            color: var(--dark-green); 
+            margin: 10px 0;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9), 
+                         -1px -1px 0 rgba(255,255,255,0.5);
+        }
+
+        .pengantin { 
+            width: 100%; 
+            max-width: 280px; 
+            margin: 15px auto; 
+            transform: scaleX(-1); 
+            opacity: 0.85; 
+            mix-blend-mode: multiply; 
+        }
+        
+        .date-container { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin: 25px 0; 
+            color: var(--accent-brown); 
+            background: rgba(255,255,255,0.3);
+            padding: 10px 0;
+        }
+        
         .side-label { flex: 1; font-size: 10px; font-weight: 600; letter-spacing: 1px; border-top: 1px solid var(--accent-brown); border-bottom: 1px solid var(--accent-brown); padding: 8px 0; text-transform: uppercase; }
         .center-date { padding: 0 15px; }
         .month-label { display: block; font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
         .day-number { font-family: 'Playfair Display', serif; font-size: 48px; line-height: 0.8; }
         .year-label { display: block; font-size: 11px; letter-spacing: 4px; font-weight: 600; margin-top: 8px; }
         
-        .location-info { font-size: 12px; color: var(--accent-brown); font-weight: 700; letter-spacing: 0.5px; line-height: 1.6; margin: 20px auto; text-transform: uppercase; }
-        .btn-location { display: inline-block; background-color: var(--accent-brown); color: #fff; padding: 14px 35px; border-radius: 40px; text-decoration: none; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-top: 10px; }
+        /* Location Info Shading */
+        .location-info { 
+            font-size: 12px; 
+            color: var(--accent-brown); 
+            font-weight: 700; 
+            letter-spacing: 0.5px; 
+            line-height: 1.6; 
+            margin: 20px 10px; 
+            text-transform: uppercase; 
+            padding: 15px;
+            background: var(--glass-white);
+            backdrop-filter: blur(3px);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .btn-location { 
+            display: inline-block; 
+            background-color: var(--accent-brown); 
+            color: #fff; 
+            padding: 14px 35px; 
+            border-radius: 40px; 
+            text-decoration: none; 
+            font-size: 11px; 
+            font-weight: 600; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            margin-top: 10px; 
+        }
 
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
     </style>
@@ -231,7 +296,6 @@
 
     <div id="music-control" onclick="toggleMusic()">🎵</div>
 
-    <!-- SECTION 0: THE ENVELOPE -->
     <div id="envelope-section">
         <div class="envelope-wrapper">
             <img src="wax.png" class="wax-seal" onclick="openEnvelope()" alt="Wax Seal">
@@ -239,7 +303,6 @@
         </div>
     </div>
 
-    <!-- SECTION 1: VIDEO REVEAL -->
     <div id="video-section">
         <div class="phone-wrapper" id="videoBox">
             <video id="weddingVideo" playsinline muted>
@@ -251,7 +314,6 @@
         </div>
     </div>
 
-    <!-- SECTION 2: INVITATION CARD -->
     <div id="invitation-section">
         <div class="invitation-card">
             <img src="flo1.png" class="flower top-left" alt="">
@@ -261,12 +323,16 @@
 
             <div class="content">
                 <div class="bismillah">﷽</div>
-                <p class="intro-text">
-                    HJH NORWANA BINTI MELLONG (HJH. NOR) <br><br>Dengan segala hormatnya, saya menjemput<br>DATO/DATIN/TUAN/PUAN/ENCIK/CIK<br><br>
+                
+                <div class="intro-text">
+                    HJH NORWANA BINTI MELLONG (HJH. NOR) <br><br>
+                    Dengan segala hormatnya, saya menjemput<br>
+                    DATO/DATIN/TUAN/PUAN/ENCIK/CIK<br><br>
                     Ke majlis walimatulurus putra saya
-                </p>
+                </div>
+
                 <h1 class="names">Mohd. Farid Bin Saleh</h1>
-                <p style="font-size: 12px; font-style: italic;">dengan pasangan</p> 
+                <p style="font-size: 12px; font-style: italic; color: var(--dark-green);">dengan pasangan</p> 
                 <h1 class="names">Nur Najjat Binti Baharuddin</h1>
                 
                 <img src="pelamin.png" class="pengantin" alt="Wedding Couple">
@@ -282,11 +348,14 @@
                 </div>
 
                 <div class="location-info">
-                    NO. 3121, TAMAN KUNAK KAYA,<br>LORONG 1, KUNAK, SABAH<br><br>
-                    <span style="font-size: 10px;">HUBUNGI:</span><br>
-                    HJH.NOR: 0198035635 <br> FARID: 0105883198
+                    NO. 3121, TAMAN KUNAK KAYA,<br>
+                    LORONG 1, KUNAK, SABAH<br><br>
+                    <span style="font-size: 10px; opacity: 0.8;">HUBUNGI:</span><br>
+                    HJH.NOR: 0198035635 <br> 
+                    FARID: 0105883198
                 </div>
-                <a href="https://maps.app.goo.gl/1Kmz8w5hyboASp4M9" class="btn-location">View Location</a>
+                
+                <a href="https://maps.google.com" target="_blank" class="btn-location">View Location</a>
             </div>
         </div>
     </div>
@@ -301,13 +370,10 @@
         const bgMusic = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('music-control');
 
-        // STEP 1: OPEN ENVELOPE
         function openEnvelope() {
-            // Start Music and Video (Satisfies browser interaction rule)
             bgMusic.play().catch(e => console.log("Audio blocked"));
             video.play();
             
-            // Fade out envelope
             envelopeSection.style.opacity = '0';
             envelopeSection.style.transform = 'scale(1.2)';
             
@@ -317,13 +383,11 @@
             }, 1000);
         }
 
-        // STEP 2: VIDEO ENDED
         video.onended = function() {
             videoBox.classList.add('blurred');
             overlayBox.classList.add('visible');
         };
 
-        // STEP 3: SHOW FINAL INVITATION
         function showInvitation() {
             videoSection.style.opacity = '0';
             
@@ -331,7 +395,7 @@
                 videoSection.style.display = 'none';
                 invitationSection.style.display = 'flex'; 
                 musicBtn.style.display = 'flex'; 
-                document.body.style.overflow = 'auto'; // Enable scrolling now
+                document.body.style.overflow = 'auto'; 
                 
                 setTimeout(() => {
                     invitationSection.style.opacity = '1';
@@ -349,6 +413,5 @@
             }
         }
     </script>
-
 </body>
 </html>
